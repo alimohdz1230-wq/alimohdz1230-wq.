@@ -1,0 +1,6 @@
+{
+  "name": "حلقات",
+  "description": "تطبيق متخصص في إدارة وتنظيم حلقات تحفيظ القرآن الكريم للطلبة والأفواج والحضور والحفظ والمسابقات والتقارير.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
