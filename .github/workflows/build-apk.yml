@@ -33,7 +33,24 @@ jobs:
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
       - name: Build web app
-        run: npm run build
+        run: npm run build --if-present
+
+      - name: Create Capacitor config if missing
+        run: |
+          if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ]; then
+            WEBDIR="dist"
+            for d in dist build out public; do
+              if [ -d "$d" ]; then WEBDIR="$d"; break; fi
+            done
+            echo "Using webDir: $WEBDIR"
+            cat > capacitor.config.json <<EOF
+          {
+            "appId": "com.alimohdz.app",
+            "appName": "MyApp",
+            "webDir": "$WEBDIR"
+          }
+          EOF
+          fi
 
       - name: Add Android platform if missing
         run: |
@@ -41,6 +58,9 @@ jobs:
 
       - name: Sync Capacitor
         run: npx cap sync android
+
+      - name: Accept Android licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
 
       - name: Build debug APK
         working-directory: android
